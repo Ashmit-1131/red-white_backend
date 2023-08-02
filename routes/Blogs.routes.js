@@ -5,6 +5,7 @@ const { BlogsModel } = require("../model/Blogs.Model");
 const blogRouter = express.Router();
 require("dotenv").config();
 
+
 blogRouter.get("/", async (req, res) => {
   try {
     const data = await BlogsModel.find();
@@ -23,7 +24,31 @@ blogRouter.get("/", async (req, res) => {
     });
   }
 });
+blogRouter.get("/user", async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const page = req.query.page || 0;
+    const decoded = jwt.verify(token, process.env.SecretKey);
+    const { userId: user } = decoded;
 
+    const count = await BlogsModel.countDocuments({ user });
+    const data = await BlogsModel.find({ user }).skip(page * 5).limit(5);
+
+    res.send({
+      message: "All cart data",
+      status: 1,
+      count: count,
+      data: data,
+      error: false,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Something went wrong: " + error.message,
+      status: 0,
+      error: true,
+    });
+  }
+});
 
 blogRouter.get("/:pid", async (req, res) => {
   try {
