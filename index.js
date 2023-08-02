@@ -27,7 +27,7 @@ app.use("/search",searchRouter)
 app.use("/user",userRouter)
 
 
-app.use(authenticator)
+
 
 app.use("/blog",blogRouter)
 
