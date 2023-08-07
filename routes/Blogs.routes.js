@@ -50,36 +50,36 @@ blogRouter.get("/user", async (req, res) => {
   }
 });
 
-// blogRouter.get("/:pid", async (req, res) => {
-//   try {
-//     const token = req.headers.authorization;
-//     const { pid } = req.params;
-//     const decoded = jwt.verify(token, process.env.SecretKey);
-//     const { userId: user } = decoded;
+blogRouter.get("/:pid", async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const { pid } = req.params;
+    const decoded = jwt.verify(token, process.env.SecretKey);
+    const { userId: user } = decoded;
 
-//     const data = await BlogsModel.find({ user, pid });
+    const data = await BlogsModel.find({ user, pid });
 
-//     if (data.length > 0) {
-//       res.send({
-//         message: "Item already in cart",
-//         status: 1,
-//         error: false,
-//       });
-//     } else {
-//       res.send({
-//         message: "Item not present in cart",
-//         status: 0,
-//         error: true,
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).send({
-//       message: "Something went wrong: " + error.message,
-//       status: 0,
-//       error: true,
-//     });
-//   }
-// });
+    if (data.length > 0) {
+      res.send({
+        message: "Item already in cart",
+        status: 1,
+        error: false,
+      });
+    } else {
+      res.send({
+        message: "Item not present in cart",
+        status: 0,
+        error: true,
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      message: "Something went wrong: " + error.message,
+      status: 0,
+      error: true,
+    });
+  }
+});
 
 blogRouter.patch("/:id", async (req, res) => {
   try {
