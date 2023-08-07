@@ -145,6 +145,36 @@ blogRouter.post("/add", async (req, res) => {
         });
         }
         });
+
+        blogRouter.get("/blog/:id", async (req, res) => {
+          try {
+            const { id } = req.params;
+        
+            const blog = await BlogsModel.findById(id);
+        
+            if (!blog) {
+              return res.status(404).send({
+                message: "Blog not found",
+                status: 0,
+                error: true,
+              });
+            }
+        
+            res.send({
+              message: "Blog fetched successfully",
+              status: 1,
+              data: blog,
+              error: false,
+            });
+          } catch (error) {
+            res.status(500).send({
+              message: "Something went wrong: " + error.message,
+              status: 0,
+              error: true,
+            });
+          }
+        });
+        
         
         module.exports = {
         blogRouter,
