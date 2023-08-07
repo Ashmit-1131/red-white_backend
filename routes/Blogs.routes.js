@@ -50,36 +50,36 @@ blogRouter.get("/user", async (req, res) => {
   }
 });
 
-blogRouter.get("/:pid", async (req, res) => {
-  try {
-    const token = req.headers.authorization;
-    const { pid } = req.params;
-    const decoded = jwt.verify(token, process.env.SecretKey);
-    const { userId: user } = decoded;
+// blogRouter.get("/:pid", async (req, res) => {
+//   try {
+//     const token = req.headers.authorization;
+//     const { pid } = req.params;
+//     const decoded = jwt.verify(token, process.env.SecretKey);
+//     const { userId: user } = decoded;
 
-    const data = await BlogsModel.find({ user, pid });
+//     const data = await BlogsModel.find({ user, pid });
 
-    if (data.length > 0) {
-      res.send({
-        message: "Item already in cart",
-        status: 1,
-        error: false,
-      });
-    } else {
-      res.send({
-        message: "Item not present in cart",
-        status: 0,
-        error: true,
-      });
-    }
-  } catch (error) {
-    res.status(500).send({
-      message: "Something went wrong: " + error.message,
-      status: 0,
-      error: true,
-    });
-  }
-});
+//     if (data.length > 0) {
+//       res.send({
+//         message: "Item already in cart",
+//         status: 1,
+//         error: false,
+//       });
+//     } else {
+//       res.send({
+//         message: "Item not present in cart",
+//         status: 0,
+//         error: true,
+//       });
+//     }
+//   } catch (error) {
+//     res.status(500).send({
+//       message: "Something went wrong: " + error.message,
+//       status: 0,
+//       error: true,
+//     });
+//   }
+// });
 
 blogRouter.patch("/:id", async (req, res) => {
   try {
@@ -146,34 +146,25 @@ blogRouter.post("/add", async (req, res) => {
         }
         });
 
-        blogRouter.get("/blog/:id", async (req, res) => {
+        blogRouter.get("/:id", async (req, res) => {
+          let { id: _id } = req.params;
           try {
-            const { id } = req.params;
-        
-            const blog = await BlogsModel.findById(id);
-        
-            if (!blog) {
-              return res.status(404).send({
-                message: "Blog not found",
-                status: 0,
-                error: true,
-              });
-            }
-        
+            let data = await BlogsModel.find({ _id });
             res.send({
-              message: "Blog fetched successfully",
+              message: "All products data",
               status: 1,
-              data: blog,
+              data: data,
               error: false,
             });
           } catch (error) {
-            res.status(500).send({
+            res.send({
               message: "Something went wrong: " + error.message,
               status: 0,
               error: true,
             });
           }
         });
+        
         
         
         module.exports = {
