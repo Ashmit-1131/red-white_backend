@@ -27,17 +27,14 @@ blogRouter.get("/", async (req, res) => {
 blogRouter.get("/user", async (req, res) => {
   try {
     const token = req.headers.authorization;
-    const page = req.query.page || 0;
     const decoded = jwt.verify(token, process.env.SecretKey);
     const { userId: user } = decoded;
 
-    const count = await BlogsModel.countDocuments({ user });
-    const data = await BlogsModel.find({ user }).skip(page * 5).limit(5);
+    const data = await BlogsModel.find({ user });
 
     res.send({
       message: "All cart data",
       status: 1,
-      count: count,
       data: data,
       error: false,
     });
