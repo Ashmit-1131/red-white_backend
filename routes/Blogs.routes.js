@@ -50,6 +50,25 @@ blogRouter.get("/user", async (req, res) => {
   }
 });
 
+blogRouter.get("/:id", async (req, res) => {
+  let { id: _id } = req.params;
+  try {
+    let data = await BlogsModel.find({ _id });
+    res.send({
+      message: "All products data",
+      status: 1,
+      data: data,
+      error: false,
+    });
+  } catch (error) {
+    res.send({
+      message: "Something went wrong: " + error.message,
+      status: 0,
+      error: true,
+    });
+  }
+});
+
 blogRouter.get("/:pid", async (req, res) => {
   try {
     const token = req.headers.authorization;
