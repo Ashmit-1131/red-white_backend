@@ -24,31 +24,31 @@ blogRouter.get("/", async (req, res) => {
     });
   }
 });
-blogRouter.get("/user", async (req, res) => {
-  try {
-    const token = req.headers.authorization;
-    const page = req.query.page || 0;
-    const decoded = jwt.verify(token, process.env.SecretKey);
-    const { userId: user } = decoded;
+// blogRouter.get("/user", async (req, res) => {
+//   try {
+//     const token = req.headers.authorization;
+//     const page = req.query.page || 0;
+//     const decoded = jwt.verify(token, process.env.SecretKey);
+//     const { userId: user } = decoded;
 
-    const count = await BlogsModel.countDocuments({ user });
-    const data = await BlogsModel.find({ user }).skip(page * 5).limit(5);
+//     const count = await BlogsModel.countDocuments({ user });
+//     const data = await BlogsModel.find({ user }).skip(page * 5).limit(5);
 
-    res.send({
-      message: "All cart data",
-      status: 1,
-      count: count,
-      data: data,
-      error: false,
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Something went wrong: " + error.message,
-      status: 0,
-      error: true,
-    });
-  }
-});
+//     res.send({
+//       message: "All cart data",
+//       status: 1,
+//       count: count,
+//       data: data,
+//       error: false,
+//     });
+//   } catch (error) {
+//     res.status(500).send({
+//       message: "Something went wrong: " + error.message,
+//       status: 0,
+//       error: true,
+//     });
+//   }
+// });
 
 blogRouter.get("/:id", async (req, res) => {
   let { id: _id } = req.params;
@@ -101,21 +101,17 @@ blogRouter.get("/:pid", async (req, res) => {
 });
 
 blogRouter.patch("/:id", async (req, res) => {
+  let { id: _id } = req.params;
+
   try {
-    const { id: _id } = req.params;
-    const token = req.headers.authorization;
-    const decoded = jwt.verify(token, process.env.SecretKey);
-    const { userId: user } = decoded;
-
-    await BlogsModel.updateOne({ _id, user }, req.body);
-
+    await BlogsModel.findByIdAndUpdate({ _id }, req.body);
     res.send({
-      message: "Item updated",
+      message: "Product updated",
       status: 1,
       error: false,
     });
   } catch (error) {
-    res.status(500).send({
+    res.send({
       message: "Something went wrong: " + error.message,
       status: 0,
       error: true,
@@ -124,28 +120,23 @@ blogRouter.patch("/:id", async (req, res) => {
 });
 
 blogRouter.delete("/:id", async (req, res) => {
+  let { id: _id } = req.params;
+
   try {
-    const { id: _id } = req.params;
-    const token = req.headers.authorization;
-    const decoded = jwt.verify(token, process.env.SecretKey);
-    const { userId: user } = decoded;
-
-    await BlogsModel.deleteOne({ _id, user });
-
+    await BlogsModel.findByIdAndDelete({ _id });
     res.send({
-      message: "Item deleted",
+      message: "Product deleted",
       status: 1,
       error: false,
     });
   } catch (error) {
-    res.status(500).send({
+    res.send({
       message: "Something went wrong: " + error.message,
       status: 0,
       error: true,
     });
   }
 });
-
 blogRouter.use(cartNorderValidator);
 
 blogRouter.post("/add", async (req, res) => {
@@ -165,25 +156,7 @@ blogRouter.post("/add", async (req, res) => {
         }
         });
 
-        blogRouter.get("/:id", async (req, res) => {
-          let { id: _id } = req.params;
-          try {
-            let data = await BlogsModel.find({ _id });
-            res.send({
-              message: "All products data",
-              status: 1,
-              data: data,
-              error: false,
-            });
-          } catch (error) {
-            res.send({
-              message: "Something went wrong: " + error.message,
-              status: 0,
-              error: true,
-            });
-          }
-        });
-        
+   
         
         
         module.exports = {
