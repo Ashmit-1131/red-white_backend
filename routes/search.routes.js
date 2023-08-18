@@ -1,5 +1,5 @@
 const express = require("express");
-const {  BlogsModel } = require("../model/Blogs.Model");
+const {   TaskModel } = require("../model/Blogs.Model");
 
 const searchRouter = express.Router();
 
@@ -9,7 +9,7 @@ searchRouter.get("/", async (req, res) => {
     let q = req.query.q || "";
     
     try {
-      BlogsModel.aggregate([
+       TaskModel.aggregate([
         {
           $match: {
             $or: [

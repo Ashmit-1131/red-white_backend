@@ -1,14 +1,14 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const { cartNorderValidator } = require("../middlewares/cart&orderValidator");
-const { BlogsModel } = require("../model/Blogs.Model");
+const {  TaskModel } = require("../model/Blogs.Model");
 const blogRouter = express.Router();
 require("dotenv").config();
 
 
 blogRouter.get("/", async (req, res) => {
   try {
-    const data = await BlogsModel.find();
+    const data = await  TaskModel.find();
 
     res.send({
       message: "All blog data",
@@ -30,7 +30,7 @@ blogRouter.get("/user", async (req, res) => {
     const decoded = jwt.verify(token, process.env.SecretKey);
     const { userId: user } = decoded;
 
-    const data = await BlogsModel.find({ user });
+    const data = await  TaskModel.find({ user });
 
     res.send({
       message: "All cart data",
@@ -50,7 +50,7 @@ blogRouter.get("/user", async (req, res) => {
 blogRouter.get("/:id", async (req, res) => {
   let { id: _id } = req.params;
   try {
-    let data = await BlogsModel.find({ _id });
+    let data = await  TaskModel.find({ _id });
     res.send({
       message: "All products data",
       status: 1,
@@ -73,7 +73,7 @@ blogRouter.get("/:pid", async (req, res) => {
     const decoded = jwt.verify(token, process.env.SecretKey);
     const { userId: user } = decoded;
 
-    const data = await BlogsModel.find({ user, pid });
+    const data = await  TaskModel.find({ user, pid });
 
     if (data.length > 0) {
       res.send({
@@ -101,7 +101,7 @@ blogRouter.patch("/:id", async (req, res) => {
   let { id: _id } = req.params;
 
   try {
-    await BlogsModel.findByIdAndUpdate({ _id }, req.body);
+    await  TaskModel.findByIdAndUpdate({ _id }, req.body);
     res.send({
       message: "Product updated",
       status: 1,
@@ -120,7 +120,7 @@ blogRouter.delete("/:id", async (req, res) => {
   let { id: _id } = req.params;
 
   try {
-    await BlogsModel.findByIdAndDelete({ _id });
+    await  TaskModel.findByIdAndDelete({ _id });
     res.send({
       message: "Product deleted",
       status: 1,
@@ -138,7 +138,7 @@ blogRouter.use(cartNorderValidator);
 
 blogRouter.post("/add", async (req, res) => {
   try {
-    await BlogsModel.insertMany(req.body);
+    await  TaskModel.insertMany(req.body);
     res.send({
         message: "Item added in blogs",
         status: 1,

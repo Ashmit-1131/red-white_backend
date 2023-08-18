@@ -1,26 +1,25 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
+const TaskSchema = mongoose.Schema(
+    {
 
-const blogsSchema = mongoose.Schema({
-    image:{type:String},
-    title:{type:String},
-    description:{type:String},
-    genre:{type:String},
+        name: { type: String, required: true },
+        description: { type: String },
+        checklist: { type: String },
+        comments: { type: String },
+        project: { type: String },
+        assign: { type: String },
+        dueDate: { type: String },
+        labels: { type: String },
+        user:{type:String,required:true}
+    },
+    {
+        versionKey: false
+    }
+);
 
-    user:{type:String,required:true},
-  pid:{type:String},
- 
+const TaskModel = mongoose.model("task", TaskSchema);
 
-
-    
-
-},{
-    versionKey:false
-})
-
-
-const BlogsModel = mongoose.model("/blog",blogsSchema)
-
-module.exports={
-    BlogsModel
-}
+module.exports = {
+    TaskModel
+};

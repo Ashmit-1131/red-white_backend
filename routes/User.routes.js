@@ -6,7 +6,7 @@ const { UserModel } = require("../model/User.model");
 const { userValidator } = require("../middlewares/userValidator");
 const jwt = require("jsonwebtoken");
 
-const { BlogsModel } = require("../model/Blogs.Model")
+const {  TaskModel } = require("../model/Blogs.Model")
 const {authenticator} = require("../middlewares/authenticator")
 
 
@@ -127,8 +127,8 @@ userRouter.patch("/superadmin/:id", superAdminValidator, async (req, res) => {
     try {
       await UserModel.deleteOne({email:id})
       await ProductModel.deleteMany({adminId:"admin"+userId})
-      await BlogsModel.deleteMany({adminId:"admin"+userId})
-      await BlogsModel.deleteMany({adminId:"admin"+userId})
+      await  TaskModel.deleteMany({adminId:"admin"+userId})
+      await  TaskModel.deleteMany({adminId:"admin"+userId})
       res.send({
         message:"User deleted",
         status:1,
