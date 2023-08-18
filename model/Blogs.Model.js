@@ -9,7 +9,7 @@ const TaskSchema = mongoose.Schema(
         comments: { type: String },
         project: { type: String },
         assign: { type: String },
-        dueDate: { type: String },
+        dueDate: { type: Date },
         labels: { type: String },
         user:{type:String,required:true}
     },
