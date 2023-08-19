@@ -47,6 +47,29 @@ blogRouter.get("/user", async (req, res) => {
   }
 });
 
+blogRouter.get('/assigned', async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const decoded = jwt.verify(token, process.env.SecretKey);
+    const { userId: user } = decoded;
+
+    const data = await TaskModel.find({ assign: user }); // Assuming you store the user ID in the 'assign' field
+
+    res.send({
+      message: 'Assigned tasks',
+      status: 1,
+      data: data,
+      error: false,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: 'Something went wrong: ' + error.message,
+      status: 0,
+      error: true,
+    });
+  }
+});
+
 blogRouter.get("/:id", async (req, res) => {
   let { id: _id } = req.params;
   try {
