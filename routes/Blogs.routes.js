@@ -138,20 +138,32 @@ blogRouter.use(cartNorderValidator);
 
 blogRouter.post("/add", async (req, res) => {
   try {
-    await  TaskModel.insertMany(req.body);
+    const tasksWithAssignedUsers = req.body;
+
+    // Insert multiple tasks into the database
+    const insertedTasks = await TaskModel.insertMany(tasksWithAssignedUsers);
+
+    // Push the inserted tasks to assigned users' tasks
+    for (const task of insertedTasks) {
+      for (const userId of task.assign) {
+        await UserModel.findByIdAndUpdate(userId, { $push: { tasks: task._id } });
+      }
+    }
+
     res.send({
-        message: "Item added in blogs",
-        status: 1,
-        error: false,
-      });
-    } catch (error) {
-        res.status(500).send({
-        message: "Something went wrong: " + error.message,
-        status: 0,
-        error: true,
-        });
-        }
-        });
+      message: "Items added in blogs",
+      status: 1,
+      error: false,
+      data: insertedTasks,
+    });
+  } catch (error) {
+    res.status(500).send({
+      message: "Something went wrong: " + error.message,
+      status: 0,
+      error: true,
+    });
+  }
+});
 
    
         
