@@ -160,6 +160,24 @@ userRouter.patch("/superadmin/:id", superAdminValidator, async (req, res) => {
   
 });
 
+userRouter.get("/",authenticator, async(req,res)=>{
+  try{
+ const user=await UserModel.find()
+ res.send({
+  message:"All user data",
+  user,
+  status:1,
+  error:false
+ })
+  }catch(error){
+res.send({
+  message:"Something went wrong",
+  status:0,
+  error:true
+})
+  }
+})
+
 userRouter.get("/getuser",authenticator,async(req,res)=>{
   let token = req.headers.authorization
   jwt.verify(token,process.env.SecretKey,async(err,decoded)=>{
