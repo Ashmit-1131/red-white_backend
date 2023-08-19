@@ -8,7 +8,7 @@ const TaskSchema = mongoose.Schema(
         checklist: { type: String },
         comments: { type: String },
         project: { type: String },
-        assign: { type: String },
+        assign: [{ type: String }],
         dueDate: { type: Date },
         labels: { type: String },
         user:{type:String,required:true}
