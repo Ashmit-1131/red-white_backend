@@ -46,14 +46,13 @@ blogRouter.get("/user", async (req, res) => {
     });
   }
 });
-
 blogRouter.get('/assigned', async (req, res) => {
   try {
     const token = req.headers.authorization;
     const decoded = jwt.verify(token, process.env.SecretKey);
     const { userId: user } = decoded;
 
-    const data = await TaskModel.find({ assign: user }); // Assuming you store the user ID in the 'assign' field
+    const data = await TaskModel.find({ assign: { $elemMatch: { userId: user } } });
 
     res.send({
       message: 'Assigned tasks',
