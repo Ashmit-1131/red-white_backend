@@ -2,16 +2,20 @@ const mongoose = require("mongoose");
 
 const TaskSchema = mongoose.Schema(
     {
-
         name: { type: String, required: true },
         description: { type: String },
         checklist: { type: String },
         comments: { type: String },
         project: { type: String },
-        assign: [{ type:String }],
+        assign: [
+            {
+                name: { type: String, required: true },
+                userId: { type: String, required: true }
+            }
+        ],
         dueDate: { type: Date },
         labels: { type: String },
-        user:[{type:String,required:true}]
+        user: [{ type: String, required: true }]
     },
     {
         versionKey: false
